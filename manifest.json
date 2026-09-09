@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "HP Auto-Potion (Alpha Rose Online)",
+  "version": "1.0.0",
+  "description": "Watches your HP bar in the Alpha Rose Online tab and presses a hotkey (default F2) automatically when HP drops below a threshold.",
+  "permissions": ["tabs", "activeTab", "storage", "debugger"],
+  "host_permissions": ["https://alpharoseonline.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "HP Auto-Potion"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://alpharoseonline.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}

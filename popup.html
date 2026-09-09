@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { width: 280px; font: 13px/1.4 system-ui, sans-serif; margin: 0; padding: 12px; background: #17181c; color: #eee; }
+  h1 { font-size: 14px; margin: 0 0 10px; }
+  label { display: block; margin-top: 10px; color: #bbb; font-size: 12px; }
+  select, input[type=number] { width: 100%; box-sizing: border-box; padding: 5px; margin-top: 3px; background: #24262c; color: #eee; border: 1px solid #3a3d45; border-radius: 4px; }
+  .row { display: flex; gap: 8px; }
+  .row > * { flex: 1; }
+  button { width: 100%; padding: 8px; margin-top: 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+  .primary { background: #6b6bff; color: #fff; }
+  .secondary { background: #2c2e35; color: #eee; }
+  .toggle { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+  .status { margin-top: 12px; padding: 8px; background: #24262c; border-radius: 6px; font-size: 12px; }
+  .status div { margin: 2px 0; }
+  .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; }
+  .ok { background: #1e5c34; color: #b9f6ca; }
+  .warn { background: #6b4a17; color: #ffd699; }
+  .off { background: #444; color: #ccc; }
+  .switch { position: relative; width: 40px; height: 22px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; inset: 0; background: #444; border-radius: 22px; cursor: pointer; transition: .15s; }
+  .slider:before { content: ""; position: absolute; height: 16px; width: 16px; left: 3px; bottom: 3px; background: #eee; border-radius: 50%; transition: .15s; }
+  input:checked + .slider { background: #6b6bff; }
+  input:checked + .slider:before { transform: translateX(18px); }
+  .hint { color: #888; font-size: 11px; margin-top: 8px; }
+  .swatchRow { display: flex; align-items: center; gap: 6px; }
+  .swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid #444; flex-shrink: 0; }
+  .mono { font-family: ui-monospace, monospace; font-size: 11px; color: #aaa; }
+</style>
+</head>
+<body>
+  <h1>HP Auto-Potion</h1>
+
+  <div class="toggle">
+    <span>Monitoring</span>
+    <label class="switch">
+      <input type="checkbox" id="enabled">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <button class="secondary" id="calibrate">🎯 Calibrate HP bar</button>
+
+  <div class="row">
+    <div>
+      <label>Threshold (%)</label>
+      <input type="number" id="threshold" min="1" max="99" value="50">
+    </div>
+    <div>
+      <label>Hotkey</label>
+      <select id="hotkey"></select>
+    </div>
+  </div>
+
+  <label>Cooldown between presses (ms)</label>
+  <input type="number" id="cooldown" min="200" step="100" value="3000">
+
+  <label>Key dispatch mode</label>
+  <select id="dispatchMode">
+    <option value="page">Page event (default)</option>
+    <option value="debugger">Debugger / trusted (shows a banner)</option>
+  </select>
+
+  <button class="secondary" id="testPress">Test press hotkey</button>
+  <button class="secondary" id="preview">Preview current reading</button>
+
+  <div class="status" id="status">
+    <div>Calibrated: <span id="calStatus" class="pill off">no</span></div>
+    <div>Last reading: <span id="lastPercent">—</span></div>
+    <div>Status: <span id="lastStatus">idle</span></div>
+    <div class="swatchRow"><span class="swatch" id="filledSwatch"></span> <span class="mono" id="filledText">filled: —</span></div>
+    <div class="swatchRow"><span class="swatch" id="emptySwatch"></span> <span class="mono" id="emptyText">empty: —</span></div>
+  </div>
+
+  <div class="hint">Every field here saves instantly as you change it — there's no separate Save button. Drag the calibration box tightly around the HP bar. Left edge = 0%, right edge = full HP. Keep the game tab focused while monitoring runs.</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
